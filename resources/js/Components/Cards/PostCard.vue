@@ -6,7 +6,7 @@
             >
                 <img
                     class="img-thumbnail"
-                    src="https://img.freepik.com/premium-photo/technological-cyberspace-background-neon-effect-ai-technology-generated-imag_1112-11244.jpg"
+                    :src="post.image"
                 />
             </Link>
             <div class="row p-3">

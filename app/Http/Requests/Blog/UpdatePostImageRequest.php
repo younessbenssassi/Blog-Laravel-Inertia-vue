@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StorePostRequest extends FormRequest
+class UpdatePostImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,24 +25,6 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => [
-                'required',
-                'string',
-                Rule::In(PostStatus::getValues())
-            ],
-            'category_id' => [
-                'required',
-                'integer',
-                'exists:categories,id'
-            ],
-            'title' => [
-                'required',
-                'string'
-            ],
-            'content' => [
-                'required',
-                'string'
-            ],
             'image' => [
                 'required',
                 'image'

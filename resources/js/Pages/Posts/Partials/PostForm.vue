@@ -15,7 +15,7 @@
                             :value="status"
                             v-model="postForm.status"
                         >
-                            {{ status }}
+                        {{ status }}
                         <i class="input-helper"></i>
                     </label>
                 </div>
@@ -48,6 +48,33 @@
                 class="text-danger"
             >
                 {{ postForm.errors.category_id }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Image</label>
+            <input
+                ref="image-input"
+                type="file"
+                class="file-upload-default"
+                @change="updateImage"
+            >
+            <div class="input-group col-xs-12">
+                <input
+                    type="text"
+                    class="form-control file-upload-info"
+                    disabled
+                    :placeholder="postForm.image?.name ?? 'Upload Image'"
+                >
+                <span class="input-group-append">
+                  <button
+                      class="file-upload-browse btn btn-primary"
+                      type="button"
+                      @click="selectImage"
+                  >
+                      Upload
+                  </button>
+                </span>
             </div>
         </div>
 
@@ -127,6 +154,7 @@ export default {
                 category_id: this.post?.category_id,
                 title: this.post?.title,
                 content: this.post?.content,
+                image: null,
             }),
         }
     },
@@ -136,6 +164,13 @@ export default {
         },
         cancel() {
             this.$emit('cancel');
+        },
+        selectImage() {
+            this.$refs['image-input'].click();
+        },
+        updateImage(e) {
+            this.postForm.image = e.target?.files[0] ?? null;
+            this.$emit('update-image', this.postForm.image);
         }
     }
 }

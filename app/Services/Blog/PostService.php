@@ -6,6 +6,8 @@ namespace App\Services\Blog;
 use App\Models\Blog\Post;
 use App\Repositories\Blog\PostRepository;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class PostService
 {
@@ -46,11 +48,15 @@ class PostService
     /**
      * @param array $data
      * @return Post
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     public function store(array $data): Post
     {
         $data['user_id'] = Auth::id();
-        return $this->postRepository->store($data);
+        $post = $this->postRepository->store($data);
+        $post->addMedia($data['image'])->toMediaCollection('images');
+        return $post;
     }
 
     /**
@@ -61,6 +67,19 @@ class PostService
     public function update(Post $post, array $data): void
     {
         $this->postRepository->update($post, $data);
+    }
+
+    /**
+     * @param Post $post
+     * @param array $data
+     * @return void
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function updateImage(Post $post, array $data): void
+    {
+        $post->clearMediaCollection('images');
+        $post->addMedia($data['image'])->toMediaCollection('images');
     }
 
     /**

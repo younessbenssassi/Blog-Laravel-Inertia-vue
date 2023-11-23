@@ -6,6 +6,7 @@ use App\Enums\Blog\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Blog\ListPostRequest;
 use App\Http\Requests\Blog\StorePostRequest;
+use App\Http\Requests\Blog\UpdatePostImageRequest;
 use App\Http\Requests\Blog\UpdatePostRequest;
 use App\Models\Blog\Post;
 use App\Services\Blog\CategoryService;
@@ -13,6 +14,8 @@ use App\Services\Blog\PostService;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class PostController extends Controller
 {
@@ -58,6 +61,8 @@ class PostController extends Controller
      *
      * @param StorePostRequest $request
      * @return RedirectResponse
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     public function store(StorePostRequest $request): RedirectResponse
     {
@@ -104,6 +109,21 @@ class PostController extends Controller
     {
         $this->postService->update($post, $request->validated());
         return to_route('blog.posts.list');
+    }
+
+    /**
+     * Update the specified resource image in storage.
+     *
+     * @param UpdatePostImageRequest $request
+     * @param Post $post
+     * @return RedirectResponse
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function updateImage(UpdatePostImageRequest $request, Post $post): RedirectResponse
+    {
+        $this->postService->updateImage($post, $request->validated());
+        return back();
     }
 
     /**

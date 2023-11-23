@@ -7,5 +7,6 @@ Route::get('/', [PostController::class, 'list'])->name('list');
 Route::post('/', [PostController::class, 'store'])->name('store');
 Route::get('/new', [PostController::class, 'new'])->name('new');
 Route::get('//{post}/edit', [PostController::class, 'edit'])->name('edit');
+Route::put('/{post}/image', [PostController::class, 'updateImage'])->name('image.update');
 Route::put('/{post}', [PostController::class, 'update'])->name('update');
 Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');

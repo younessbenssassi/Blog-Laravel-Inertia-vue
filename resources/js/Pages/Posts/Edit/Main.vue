@@ -15,6 +15,7 @@
                         :statuses="statuses"
                         @save="update"
                         @cancel="cancel"
+                        @update-image="updateImage"
                     />
                 </div>
             </div>
@@ -55,6 +56,12 @@ export default {
         },
         update(postForm) {
             postForm.put(route('blog.posts.update', this.post));
+        },
+        updateImage(image){
+            Inertia.post(route('blog.posts.image.update', this.post), {
+                _method: 'put',
+                image: image,
+            })
         }
     }
 }

@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -65,8 +67,10 @@ class Post extends Model
      */
     protected function image(): Attribute
     {
+        $image = $this->getMedia('images')->first();
         return Attribute::make(
-            get: fn() => 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+            get: fn() => $image ? asset('storage/'.$image->id.'/'.$image->file_name) :
+                'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png',
         );
     }
 

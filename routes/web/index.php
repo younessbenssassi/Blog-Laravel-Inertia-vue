@@ -7,10 +7,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
 
-//    Route::name('users.')
-//        ->prefix('users')
-//        ->group(__DIR__ . '/users.php');
-
     Route::name('blog.')
         ->group(__DIR__ . '/Blog/index.php');
 
